@@ -1,0 +1,398 @@
+{% extends "base.html" %}
+
+{% block title %}Tasks | CRM System{% endblock %}
+
+{% block styles %}
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #ddd;
+            padding: 18px 30px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .container {
+            padding: 30px;
+        }
+
+        .page-header {
+            margin-bottom: 25px;
+        }
+
+        .page-header h2 {
+            margin: 0 0 6px;
+        }
+
+        .page-header p {
+            margin: 0;
+            color: #777;
+        }
+
+        .form-container {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .form-container h3 {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            margin-bottom: 7px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #444;
+        }
+
+        input,
+        select,
+        textarea {
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+        }
+
+        textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #555;
+        }
+
+        .button-container {
+            margin-top: 20px;
+        }
+
+        .primary-button {
+            background: #2f5d8a;
+            color: white;
+            border: none;
+            padding: 11px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .primary-button:hover {
+            background: #244a6f;
+        }
+
+        #task-message {
+            margin-top: 12px;
+            font-size: 14px;
+        }
+
+        .table-container {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background: #f8f9fa;
+            font-size: 14px;
+            color: #555;
+        }
+
+        td {
+            font-size: 14px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 4px;
+            background: #eef2f5;
+            font-size: 12px;
+            text-transform: capitalize;
+        }
+
+        .description {
+            max-width: 280px;
+            color: #666;
+        }
+
+        .action-button {
+            border: none;
+            padding: 7px 11px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-right: 5px;
+        }
+
+        .edit-button {
+            background: #e8eef5;
+            color: #2f5d8a;
+        }
+
+        .delete-button {
+            background: #f8e8e8;
+            color: #a33;
+        }
+
+        .complete-button {
+            background: #e8f3ea;
+            color: #28733c;
+        }
+
+        @media (max-width: 700px) {
+            .container {
+                padding: 15px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full-width {
+                grid-column: auto;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+
+        <div class="page-header">
+            <h2>Tasks</h2>
+            <p>Manage follow-ups, due dates and assigned tasks.</p>
+        </div>
+
+
+        <!-- ADD TASK FORM -->
+
+        <div class="form-container">
+
+            <h3>Add New Task</h3>
+
+            <form id="task-form">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label for="title">
+                            Task Title
+                        </label>
+
+                        <input
+                            type="text"
+                            id="title"
+                            placeholder="Enter task title"
+                            required
+                        >
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="due-date">
+                            Due Date
+                        </label>
+
+                        <input
+                            type="datetime-local"
+                            id="due-date"
+                            required
+                        >
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="contact-id">
+                            Contact ID
+                        </label>
+
+                        <input
+                            type="number"
+                            id="contact-id"
+                            placeholder="Example: 1"
+                        >
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="deal-id">
+                            Deal ID
+                        </label>
+
+                        <input
+                            type="number"
+                            id="deal-id"
+                            placeholder="Example: 1"
+                        >
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="assigned-to">
+                            Assigned User ID
+                        </label>
+
+                        <input
+                            type="number"
+                            id="assigned-to"
+                            placeholder="Example: 2"
+                        >
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="status">
+                            Status
+                        </label>
+
+                        <select id="status">
+
+                            <option value="pending">
+                                Pending
+                            </option>
+
+                            <option value="completed">
+                                Completed
+                            </option>
+
+                        </select>
+                    </div>
+
+
+                    <div class="form-group full-width">
+
+                        <label for="description">
+                            Description
+                        </label>
+
+                        <textarea
+                            id="description"
+                            placeholder="Enter task description"
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+
+                <div class="button-container">
+
+                    <button
+                        type="submit"
+                        class="primary-button"
+                    >
+                        Add Task
+                    </button>
+
+                </div>
+
+
+                <div id="task-message"></div>
+
+            </form>
+
+        </div>
+
+
+        <!-- TASK TABLE -->
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Task</th>
+                        <th>Description</th>
+                        <th>Contact</th>
+                        <th>Deal</th>
+                        <th>Due Date</th>
+                        <th>Status</th>
+                        <th>Assigned To</th>
+                        <th>Actions</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="tasks-table-body">
+
+                    <tr>
+                        <td colspan="8">
+                            Loading tasks...
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+{% endblock %}
+
+{% block scripts %}
+    <script
+        src="{{ url_for('static', filename='js/tasks.js') }}"
+    ></script>
+{% endblock %}

@@ -1,0 +1,279 @@
+{% extends "base.html" %}
+
+{% block title %}Companies | CRM System{% endblock %}
+
+{% block styles %}
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #ddd;
+            padding: 18px 30px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .container {
+            padding: 30px;
+        }
+
+        .page-header {
+            margin-bottom: 25px;
+        }
+
+        .page-header h2 {
+            margin: 0 0 6px;
+        }
+
+        .page-header p {
+            margin: 0;
+            color: #777;
+        }
+
+        /* Add Company Form */
+
+        .add-company-section {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            padding: 22px;
+            margin-bottom: 25px;
+        }
+
+        .add-company-section h2 {
+            margin-top: 0;
+            margin-bottom: 18px;
+            font-size: 20px;
+        }
+
+        #company-form {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        #company-form input,
+        #company-form textarea {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+        }
+
+        #company-form textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        #company-form button {
+            width: fit-content;
+            padding: 11px 20px;
+            border: none;
+            border-radius: 5px;
+            background: #2563eb;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        #company-form button:hover {
+            background: #1d4ed8;
+        }
+
+        #company-message {
+            margin: 12px 0 0;
+            font-size: 14px;
+        }
+
+        /* Table */
+
+        .table-container {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background: #f8f9fa;
+            font-size: 14px;
+            color: #555;
+        }
+
+        td {
+            font-size: 14px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .contact-count {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 4px;
+            background: #eef2f5;
+            font-size: 12px;
+        }
+
+        .website {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .action-button {
+            padding: 6px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 5px;
+            font-size: 12px;
+        }
+
+        .edit-button {
+            background: #eef2f5;
+            color: #222;
+        }
+
+        .delete-button {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+
+        <div class="page-header">
+            <h2>Companies</h2>
+            <p>Manage companies and their contact information.</p>
+        </div>
+
+
+        <!-- Add Company Section -->
+
+        <div class="add-company-section">
+
+            <h2>Add New Company</h2>
+
+            <form id="company-form">
+
+                <input
+                    type="text"
+                    id="company-name"
+                    placeholder="Company Name"
+                    required
+                >
+
+                <input
+                    type="text"
+                    id="industry"
+                    placeholder="Industry"
+                >
+
+                <input
+                    type="url"
+                    id="website"
+                    placeholder="Website"
+                >
+
+                <input
+                    type="text"
+                    id="phone"
+                    placeholder="Phone"
+                >
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Email"
+                >
+
+                <textarea
+                    id="address"
+                    placeholder="Address"
+                ></textarea>
+
+                <button type="submit">
+                    Add Company
+                </button>
+
+            </form>
+
+            <p id="company-message"></p>
+
+        </div>
+
+
+        <!-- Companies Table -->
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Company</th>
+                        <th>Industry</th>
+                        <th>Website</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Address</th>
+                        <th>Contacts</th>
+                        <th>Actions</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="companies-table-body">
+
+                    <tr>
+                        <td colspan="8">
+                            Loading companies...
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/companies.js') }}"></script>
+{% endblock %}

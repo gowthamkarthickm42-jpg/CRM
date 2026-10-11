@@ -1,0 +1,231 @@
+{% extends "base.html" %}
+
+{% block title %}CRM Leads{% endblock %}
+
+{% block content %}
+
+
+
+    <!-- Main Container -->
+    <div class="page-container">
+
+        <h1>Leads</h1>
+
+        <p>
+            Manage potential customers and assign leads to sales representatives.
+        </p>
+
+
+        <!-- Add Lead -->
+        <section class="report-section">
+
+            <h2>Add New Lead</h2>
+
+            <form id="leadForm">
+
+                <div>
+                    <label>First Name</label>
+
+                    <input
+                        type="text"
+                        id="firstName"
+                        required>
+                </div>
+
+                <br>
+
+                <div>
+                    <label>Last Name</label>
+
+                    <input
+                        type="text"
+                        id="lastName">
+                </div>
+
+                <br>
+
+                <div>
+                    <label>Email</label>
+
+                    <input
+                        type="email"
+                        id="email">
+                </div>
+
+                <br>
+
+                <div>
+                    <label>Phone</label>
+
+                    <input
+                        type="text"
+                        id="phone">
+                </div>
+
+                <br>
+
+                <div>
+                    <label>Job Title</label>
+
+                    <input
+                        type="text"
+                        id="jobTitle">
+                </div>
+
+                <br>
+
+                <div>
+                    <label>Company ID</label>
+
+                    <input
+                        type="number"
+                        id="companyId"
+                        placeholder="Example: 1">
+                </div>
+
+                <br>
+
+                <div>
+                    <label>Assigned Sales Rep ID</label>
+
+                    <input
+                        type="number"
+                        id="assignedTo"
+                        placeholder="Example: 2">
+                </div>
+
+                <br>
+
+                <button type="submit">
+                    Add Lead
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <!-- Search and Filters -->
+        <section class="report-section">
+
+            <h2>Search and Filter Leads</h2>
+
+            <div>
+
+                <input
+                    type="text"
+                    id="leadSearch"
+                    placeholder="Search by lead name...">
+
+                <select id="companyFilter">
+
+                    <option value="">
+                        All Companies
+                    </option>
+
+                </select>
+
+                <select id="salesRepFilter">
+
+                    <option value="">
+                        All Sales Reps
+                    </option>
+
+                </select>
+
+                <select id="statusFilter">
+
+                    <option value="">
+                        All Status
+                    </option>
+
+                    <option value="lead">
+                        Lead
+                    </option>
+
+                    <option value="contacted">
+                        Contacted
+                    </option>
+
+                    <option value="qualified">
+                        Qualified
+                    </option>
+
+                    <option value="proposal_sent">
+                        Proposal Sent
+                    </option>
+
+                    <option value="won">
+                        Won
+                    </option>
+
+                    <option value="lost">
+                        Lost
+                    </option>
+
+                </select>
+
+                <button
+                    type="button"
+                    onclick="filterLeads()">
+                    Search
+                </button>
+
+                <button
+                    type="button"
+                    onclick="clearLeadFilters()">
+                    Clear
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- Lead List -->
+        <section class="report-section">
+
+            <h2>Lead List</h2>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Company</th>
+                        <th>Sales Rep</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="leadsTableBody">
+
+                    <tr>
+
+                        <td colspan="8">
+                            Loading leads...
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+    </div>
+
+
+    <!-- JavaScript -->
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/leads.js') }}"></script>
+{% endblock %}

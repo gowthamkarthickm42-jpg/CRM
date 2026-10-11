@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}CRM Reports{% endblock %}
+
+{% block content %}
+    <div class="page-container">
+
+        
+
+        <p>View pipeline, sales performance and lead reports.</p>
+
+
+        <!-- Pipeline Summary -->
+
+        <section class="report-section">
+
+            <h2>Pipeline Summary</h2>
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Stage</th>
+                        <th>Deal Count</th>
+                        <th>Total Value</th>
+                    </tr>
+                </thead>
+
+                <tbody id="pipelineTableBody">
+                </tbody>
+
+            </table>
+
+        </section>
+
+
+        <!-- Won vs Lost -->
+
+        <section class="report-section">
+
+            <h2>Won vs Lost</h2>
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Stage</th>
+                        <th>Deal Count</th>
+                        <th>Total Value</th>
+                    </tr>
+                </thead>
+
+                <tbody id="wonLostTableBody">
+                </tbody>
+
+            </table>
+
+        </section>
+
+
+        <!-- Sales Rep Performance -->
+
+        <section class="report-section">
+
+            <h2>Sales Rep Performance</h2>
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Sales Rep</th>
+                        <th>Total Deals</th>
+                        <th>Won Deals</th>
+                        <th>Won Value</th>
+                    </tr>
+                </thead>
+
+                <tbody id="salesPerformanceTableBody">
+                </tbody>
+
+            </table>
+
+        </section>
+
+
+        <!-- Monthly Leads -->
+
+        <section class="report-section">
+
+            <h2>Monthly New Leads</h2>
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Month</th>
+                        <th>Lead Count</th>
+                    </tr>
+                </thead>
+
+                <tbody id="monthlyLeadsTableBody">
+                </tbody>
+
+            </table>
+
+        </section>
+
+    </div>
+
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/reports.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CRM System{% endblock %}</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block styles %}{% endblock %}
+</head>
+
+<body class="{% block body_class %}{% endblock %}">
+
+    {# Header + navigation. Pages like login.html can switch it off. #}
+    {% block header %}
+    <header class="app-header">
+        <div class="header-top">
+            <h1 class="app-title">CRM System</h1>
+            <a href="/logout" class="btn btn-logout" id="logoutBtn">Logout</a>
+        </div>
+
+        {# Each tab is (label, url, dropdown links).
+           Leave the dropdown list empty ([]) for a plain tab.
+           The "#add-form" links need an element with id="add-form" on that page. #}
+        {% set nav_items = [
+            ('Dashboard',  '/dashboard',  []),
+            ('Leads',      '/leads',      [('All leads', '/leads'), ('Add a lead', '/leads#add-form')]),
+            ('Contacts',   '/contacts',   [('All contacts', '/contacts'), ('Add a contact', '/contacts#add-form')]),
+            ('Companies',  '/companies',  []),
+            ('Deals',      '/deals',      []),
+            ('Activities', '/activities', []),
+            ('Tasks',      '/tasks',      []),
+            ('Reports',    '/reports',    [])
+        ] %}
+
+        <nav class="main-nav">
+            {% for label, url, subs in nav_items %}
+            <div class="nav-item">
+                <a href="{{ url }}"
+                   class="nav-link{% if request.path.startswith(url) %} active{% endif %}">
+                    {{ label }}
+                </a>
+
+                {% if subs %}
+                <div class="nav-dropdown">
+                    {% for sub_label, sub_url in subs %}
+                    <a href="{{ sub_url }}">{{ sub_label }}</a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </nav>
+    </header>
+    {% endblock %}
+
+    <main class="page-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

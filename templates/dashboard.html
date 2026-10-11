@@ -1,0 +1,247 @@
+
+{% extends "base.html" %}
+
+{% block title %}CRM Dashboard{% endblock %}
+
+{% block styles %}
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #ddd;
+            padding: 18px 30px;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .logout-button {
+            padding: 9px 16px;
+            background: #dc2626;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .logout-button:hover {
+            background: #b91c1c;
+        }
+
+        .logout-button:disabled {
+            opacity: 0.6;
+            cursor: wait;
+        }
+
+        .navigation {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .navigation a {
+            text-decoration: none;
+            color: #333;
+            padding: 8px 13px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #fff;
+            font-size: 14px;
+        }
+
+        .navigation a:hover {
+            background: #f0f2f4;
+        }
+
+        .navigation a.active {
+            background: #243b53;
+            color: white;
+            border-color: #243b53;
+        }
+
+        .container {
+            padding: 30px;
+        }
+
+        .welcome {
+            margin-bottom: 25px;
+        }
+
+        .welcome h2 {
+            margin: 0 0 6px;
+        }
+
+        .welcome p {
+            margin: 0;
+            color: #777;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            padding: 22px;
+        }
+
+        .card-title {
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .card-value {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .recent-activities {
+            margin-top: 30px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            padding: 22px;
+        }
+
+        .recent-activities h2 {
+            margin: 0 0 20px;
+            font-size: 20px;
+        }
+
+        #activities-list p {
+            color: #777;
+            margin: 0;
+        }
+
+        @media (max-width: 900px) {
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                padding: 15px;
+            }
+
+            .container {
+                padding: 20px 15px;
+            }
+
+            .navigation {
+                gap: 6px;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="welcome">
+            <h2>Dashboard</h2>
+            <p>Welcome to your CRM dashboard.</p>
+        </div>
+
+        <div class="cards">
+            <div class="card">
+                <div class="card-title">Total Contacts</div>
+                <div class="card-value" id="total-contacts">0</div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Total Companies</div>
+                <div class="card-value" id="total-companies">0</div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Total Deals</div>
+                <div class="card-value" id="total-deals">0</div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Pipeline Value</div>
+                <div class="card-value" id="pipeline-value">₹0</div>
+            </div>
+        </div>
+
+        <div class="recent-activities">
+            <h2>Recent Activities</h2>
+            <div id="activities-list">
+                <p>Loading activities...</p>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+    <script>
+        const logoutButton = document.getElementById("logoutButton");
+
+        logoutButton.addEventListener("click", async function () {
+            const confirmed = confirm("Are you sure you want to log out?");
+
+            if (!confirmed) {
+                return;
+            }
+
+            logoutButton.disabled = true;
+            logoutButton.textContent = "Logging out...";
+
+            try {
+                const response = await fetch("/api/auth/logout", {
+                    method: "POST",
+                    credentials: "same-origin"
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.status === "success") {
+                    window.location.replace("/login");
+                } else {
+                    alert(result.message || "Unable to log out.");
+                    logoutButton.disabled = false;
+                    logoutButton.textContent = "Logout";
+                }
+            } catch (error) {
+                console.error("Logout error:", error);
+                alert("Could not connect to the CRM server. Please try again.");
+                logoutButton.disabled = false;
+                logoutButton.textContent = "Logout";
+            }
+        });
+    </script>
+{% endblock %}

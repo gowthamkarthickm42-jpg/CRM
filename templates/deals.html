@@ -1,0 +1,322 @@
+{% extends "base.html" %}
+
+{% block title %}Deals | CRM System{% endblock %}
+
+{% block styles %}
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #ddd;
+            padding: 18px 30px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .container {
+            padding: 30px;
+        }
+
+        .page-header {
+            margin-bottom: 25px;
+        }
+
+        .page-header h2 {
+            margin: 0 0 6px;
+        }
+
+        .page-header p {
+            margin: 0;
+            color: #777;
+        }
+
+        /* Add Deal Form */
+
+        .add-deal-section {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            padding: 22px;
+            margin-bottom: 25px;
+        }
+
+        .add-deal-section h2 {
+            margin-top: 0;
+            margin-bottom: 18px;
+            font-size: 20px;
+        }
+
+        #deal-form {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        #deal-form input,
+        #deal-form select {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        #deal-form button {
+            width: fit-content;
+            padding: 11px 20px;
+            border: none;
+            border-radius: 5px;
+            background: #2563eb;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        #deal-form button:hover {
+            background: #1d4ed8;
+        }
+
+        #deal-message {
+            margin: 12px 0 0;
+            font-size: 14px;
+        }
+
+        /* Table */
+
+        .table-container {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background: #f8f9fa;
+            font-size: 14px;
+            color: #555;
+        }
+
+        td {
+            font-size: 14px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .stage {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 4px;
+            background: #eef2f5;
+            font-size: 12px;
+        }
+
+        .value {
+            font-weight: bold;
+        }
+
+        .action-button {
+            padding: 6px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 5px;
+            font-size: 12px;
+        }
+
+        .edit-button {
+            background: #eef2f5;
+            color: #222;
+        }
+
+        .delete-button {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+
+    <div class="container">
+
+        <div class="page-header">
+
+            <h2>Deals</h2>
+
+            <p>
+                Manage sales opportunities and pipeline stages.
+            </p>
+
+        </div>
+
+
+        <!-- Add Deal Section -->
+
+        <div class="add-deal-section">
+
+            <h2>Add New Deal</h2>
+
+            <form id="deal-form">
+
+                <input
+                    type="text"
+                    id="deal-title"
+                    placeholder="Deal Title"
+                    required
+                >
+
+
+                <input
+                    type="number"
+                    id="contact-id"
+                    placeholder="Contact ID"
+                    required
+                >
+
+
+                <input
+                    type="number"
+                    id="assigned-to"
+                    placeholder="Assigned User ID"
+                >
+
+
+                <select id="stage">
+
+                    <option value="new">
+                        New
+                    </option>
+
+                    <option value="contacted">
+                        Contacted
+                    </option>
+
+                    <option value="qualified">
+                        Qualified
+                    </option>
+
+                    <option value="proposal_sent">
+                        Proposal Sent
+                    </option>
+
+                    <option value="won">
+                        Won
+                    </option>
+
+                    <option value="lost">
+                        Lost
+                    </option>
+
+                </select>
+
+
+                <input
+                    type="number"
+                    id="deal-value"
+                    placeholder="Deal Value"
+                    min="0"
+                    step="0.01"
+                >
+
+
+                <input
+                    type="date"
+                    id="expected-close-date"
+                >
+
+
+                <button type="submit">
+                    Add Deal
+                </button>
+
+            </form>
+
+
+            <p id="deal-message"></p>
+
+        </div>
+
+
+        <!-- Deals Table -->
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Deal</th>
+
+                        <th>Contact</th>
+
+                        <th>Company</th>
+
+                        <th>Stage</th>
+
+                        <th>Deal Value</th>
+
+                        <th>Expected Close</th>
+
+                        <th>Assigned To</th>
+
+                        <th>Actions</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="deals-table-body">
+
+                    <tr>
+
+                        <td colspan="8">
+                            Loading deals...
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/deals.js') }}"></script>
+{% endblock %}
