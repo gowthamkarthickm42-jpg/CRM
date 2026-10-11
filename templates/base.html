@@ -16,7 +16,7 @@
     <header class="app-header">
         <div class="header-top">
             <h1 class="app-title">CRM System</h1>
-            <a href="/logout" class="btn btn-logout" id="logoutBtn">Logout</a>
+            <button type="button" class="btn btn-logout" id="logoutBtn">Logout</button>
         </div>
 
         {# Each tab is (label, url, dropdown links).
@@ -57,6 +57,27 @@
     <main class="page-content">
         {% block content %}{% endblock %}
     </main>
+
+    {# Logout: your auth.py only accepts POST at /api/auth/logout, so a plain link gives 404/405. #}
+    <script>
+        const logoutBtn = document.getElementById("logoutBtn");
+
+        if (logoutBtn) {
+            logoutBtn.addEventListener("click", async () => {
+                try {
+                    await fetch("/api/auth/logout", {
+                        method: "POST",
+                        credentials: "same-origin"
+                    });
+                } catch (error) {
+                    console.error("Logout failed:", error);
+                }
+
+                // Change "/login" if your login page lives at a different URL
+                window.location.href = "/login";
+            });
+        }
+    </script>
 
     {% block scripts %}{% endblock %}
 </body>
